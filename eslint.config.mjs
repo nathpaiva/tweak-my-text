@@ -1,22 +1,36 @@
-import eslintPluginPrettier from 'eslint-plugin-prettier'
-import eslintConfigPrettier from 'eslint-config-prettier'
 import tseslint from 'typescript-eslint'
+import prettierPlugin from 'eslint-plugin-prettier'
+
+const { configs: tsConfigs, parser } = tseslint
 
 export default [
-  // This block contains the ESLint config for TypeScript
-  ...tseslint.config({
+  {
+    ignores: ['dist', 'coverage'],
+  },
+  ...tsConfigs.recommended,
+  {
     files: ['**/*.ts'],
+    languageOptions: {
+      parser,
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
     plugins: {
-      prettier: eslintPluginPrettier,
+      prettier: prettierPlugin,
     },
     rules: {
       'prettier/prettier': 'warn',
+      'arrow-body-style': 'off',
+      'prefer-arrow-callback': 'off',
+      'no-console': 'off',
+      'no-process-exit': 'off',
+      'no-unused-vars': 'off',
+      'no-undef': 'off',
+      'no-extra-boolean-cast': 'off',
+      'no-extra-semi': 'off',
+      'no-extra-parens': 'off',
     },
-    extends: [eslintConfigPrettier],
-  }),
-
-  // This block defines which files/folders to ignore
-  {
-    ignores: ['dist', 'coverage'],
   },
 ]
